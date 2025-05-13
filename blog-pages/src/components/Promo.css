@@ -1,0 +1,57 @@
+/* Custom styles to support Forced Colors Mode */
+@media (forced-colors: active) {
+    /* Background colors for high contrast */
+    .bg-purple-400 {
+      background-color: #800080 !important; /* Use a standard purple color for high contrast */
+    }
+  
+    .bg-white {
+      background-color: white !important;
+    }
+  
+    .text-white {
+      color: white !important;
+    }
+  
+    .text-gray-300 {
+      color: #D3D3D3 !important; /* Light gray for text */
+    }
+  
+    .text-gray-800 {
+      color: #333 !important; /* Darker gray for text */
+    }
+  
+    .text-blue-500 {
+      color: #0000FF !important; /* Blue color for links */
+    }
+  
+    .border-none {
+      border: none !important;
+    }
+  
+    /* Optional: Ensure strong contrast in the iframe and other elements */
+    iframe {
+      border: none !important;
+    }
+  
+    /* Optional: Highlight specific UI elements for clarity */
+    h1 {
+      font-weight: bold !important;
+    }
+  
+    p {
+      font-size: 1rem !important;
+    }
+  }
+
+  @media (-ms-high-contrast: active) {
+    /* Your general contrast theme styles */
+  }
+  
+  @media (-ms-high-contrast: black-on-white) {
+    /* Your specific light contrast theme styles */
+  }
+  
+  @media (-ms-high-contrast: white-on-black) {
+    /* Your specific dark contrast theme styles */
+  }
