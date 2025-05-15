@@ -168,6 +168,7 @@ class UserChangePasswordSerializer(serializers.Serializer):
 
 class UserGameCartSerializer(serializers.ModelSerializer):
     game = serializers.PrimaryKeyRelatedField(queryset=Game.objects.all())
+    # total_price = serializers.DecimalField(decimal_places=2, default=0.0)
 
     class Meta:
         model = GameCart

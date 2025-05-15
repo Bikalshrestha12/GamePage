@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+@media (forced-colors: active) {
+  body {
+    background-color: Window;
+    color: WindowText;
+  }
+}
+
 
 
 /* #root {

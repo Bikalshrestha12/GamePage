@@ -163,19 +163,26 @@ class UserLoginViewSet(viewsets.ViewSet):
 class AuthViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
 
-    @action(detail=False, methods=['post'])
     def logout(self, request):
-        try:
-            # Retrieve the JWT token from the request
-            token = request.auth  # `request.auth` should have the token from JWT Authentication
-            if token:
-                # Blacklist the token to prevent further usage (if using SimpleJWT's blacklist)
-                BlacklistedToken.objects.create(token=token)
+        token = request.auth
+        return Response({"message": "Successfully logged out."}, status=200)
+    
+# class AuthViewSet(viewsets.ViewSet):
+#     permission_classes = [IsAuthenticated]
 
-            # Return a response confirming logout
-            return Response({"message": "Successfully logged out."}, status=200)
-        except Exception as e:
-            return Response({"error": str(e)}, status=400)
+#     @action(detail=False, methods=['post'])
+#     def logout(self, request):
+#         try:
+#             # Retrieve the JWT token from the request
+#             token = request.auth  # `request.auth` should have the token from JWT Authentication
+#             if token:
+#                 # Blacklist the token to prevent further usage (if using SimpleJWT's blacklist)
+#                 BlacklistedToken.objects.create(token=token)
+
+#             # Return a response confirming logout
+#             return Response({"message": "Successfully logged out."}, status=200)
+#         except Exception as e:
+            # return Response({"error": str(e)}, status=400)
                     
 # class UserLoginViewSet(viewsets.ModelViewSet):  # use ViewSet instead of ModelViewSet for login
 #     queryset = CustomUser.objects.all()
@@ -325,10 +332,12 @@ class GameCartViewSet(viewsets.ModelViewSet):
 
         game_id = self.request.query_params.get('game_id')
         if game_id:
-            queryset = queryset.filter(game__id=game_id)
-
+            queryset = queryset.filter(game_id=game_id)
         return queryset
     
+    def perform_create(self, serializer):
+        # ✅ Set the user when creating a cart item
+        serializer.save(user=self.request.user)
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)

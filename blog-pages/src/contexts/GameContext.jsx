@@ -1,3 +1,4 @@
+
 // import React, { createContext, useEffect, useState } from 'react';
 // import { ToastContainer, toast } from 'react-toastify';
 // import { useNavigate } from 'react-router-dom';
@@ -437,9 +438,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate, useNavigation } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import * as jwtDecode from 'jwt-decode';
+import  {jwtDecode} from 'jwt-decode';
 import axiosWithAuth from '../pages/axiosWithAuth';
-import jwt_decode from "jwt-decode";
+// import { jwt_decode } from "jwt-decode";
 
 export const GameContext = createContext();
 
@@ -457,22 +458,17 @@ const GameContextProvider = (props) => {
             : null
     );
 
-    const [user, setUser] = useState(() => 
-        localStorage.getItem("authTokens")
-            ? jwt_decode(localStorage.getItem("authTokens"))
-            : null
-    );
 
     const [loading, setLoading] = useState(true);
 
-    const navigation = useNavigation();
+    // const navigation = useNavigation();
 
   // Utility function to check if the user is logged in
-  const isLoggedIn = () => !!localStorage.getItem('access_token');
-  console.log("localStorage", localStorage)
+  const isLoggedIn = () => !!localStorage.getItem('token');
+
 
   // Function to handle login
-  // const login = async (credentials) => {
+  // const loginUser = async (credentials) => {
   //   try {
   //     const response = await axios.post('http://localhost:8000/api/login/', credentials);
   
@@ -500,7 +496,81 @@ const GameContextProvider = (props) => {
   //   }
   // };
 
-  // const login = async () => {
+    // const loginUser = async () => {
+    //     // setIsLoading(true);
+    //     try {
+    //       const response = await axios.post('http://localhost:8000/api/login/', {
+    //         email,
+    //         password
+    //       });
+      
+    //       // Log the full response from the backend for debugging purposes
+    //       console.log("Full response from backend:", response.data.token.access.access);
+      
+    //       const data = response.data;
+      
+    //       // Ensure the data contains the required fields
+    //       if (!data || !data.token || !data.token.access || !data.user) {
+    //         console.error("Login failed: Missing token or user data.");
+    //         alert('Login failed: Missing token or user data.');
+    //         return;
+    //       }
+      
+    //       const accessToken = data.token.access.access; // Corrected token access path
+    //       const user = data.user;
+      
+    //       // Save the access token in cookies and localStorage
+    //       Cookies.set('authToken', accessToken, { expires: 7 });  // Token will expire in 7 days
+    //       localStorage.setItem('token', accessToken);
+    //       localStorage.setItem('user', JSON.stringify(user));
+      
+    //       // Success message
+    //       toast.success('Logged in successfully!');
+      
+    //       // Redirect based on the user role
+    //       if (user.role === 'admin') {
+    //         navigate('/dashboard');
+    //       } else {
+    //         navigate('/');
+    //       }
+      
+    //     } catch (error) {
+    //       // Handle errors gracefully
+    //       if (error.response) {
+    //         console.error('Login failed:', error.response.data);
+    //         toast.error("Invalid Email or Password");
+    //       } else {
+    //         console.error('Login error:', error.message);
+    //         alert('An error occurred during login.');
+    //       }
+    //     }
+    //   };
+
+    //   useEffect(() => {
+    //     const tokenLocal = localStorage.getItem('token');
+    //     const tokenCookie = Cookies.get('authToken');
+
+    //     console.log('Token in LocalStorage:', tokenLocal);
+    //     console.log('Token in Cookies:', tokenCookie);
+
+    //     // Case 1: Both tokens are missing
+    //     if (!tokenLocal && !tokenCookie) {
+    //       // navigate('/home-gape'); 
+    //       console.warn('Not Token Found');
+    //     }
+    //     else if (tokenLocal && tokenCookie && tokenLocal === tokenCookie) {
+    //       // navigate('/use-page');
+    //       console.warn('Token Founded');
+    //     }
+    //     else {
+    //       // navigate('/login')
+    //       console.warn('Token mismatch or partial presence.');
+    //       // Optional: log out user or show message
+    //     }
+    //   }, []);
+
+
+  // const loginUser = async () => {
   //     try {
   //       const response = await axios.post('http://localhost:8000/api/login/', {
   //         email,
@@ -550,60 +620,82 @@ const GameContextProvider = (props) => {
   //     }
   //   };
 
-  const loginUser = async (email, password) => {
-        const response = await fetch("http://127.0.0.1:8000/api/token/", {
-            method: "POST",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body: JSON.stringify({
-                email, password
-            })
-        })
-        const data = await response.json()
-        console.log(data);
+  // const loginUser = async (email, password) => {
+  //       const response = await fetch("http://127.0.0.1:8000/api/token/", {
+  //           method: "POST",
+  //           headers:{
+  //               "Content-Type":"application/json"
+  //           },
+  //           body: JSON.stringify({
+  //               email, password
+  //           })
+  //       })
+  //       const data = await response.json()
+  //       console.log(data);
+        
+          
+  //       if(response.status === 200){
+  //           console.log("Logged In");
+  //           setAuthTokens(data)
+  //           // setUser(jwt_decode(data.access))
+  //           localStorage.setItem("authTokens", JSON.stringify(data))
+  //           history.push("/")
+  //           swal.fire({
+  //               title: "Login Successful",
+  //               icon: "success",
+  //               toast: true,
+  //               timer: 6000,
+  //               position: 'top-right',
+  //               timerProgressBar: true,
+  //               showConfirmButton: false,
+  //           })
 
-        if(response.status === 200){
-            console.log("Logged In");
-            setAuthTokens(data)
-            setUser(jwt_decode(data.access))
-            localStorage.setItem("authTokens", JSON.stringify(data))
-            history.push("/")
-            swal.fire({
-                title: "Login Successful",
-                icon: "success",
-                toast: true,
-                timer: 6000,
-                position: 'top-right',
-                timerProgressBar: true,
-                showConfirmButton: false,
-            })
+  //       } else {    
+  //           console.log(response.status);
+  //           console.log("there was a server issue");
+  //           swal.fire({
+  //               title: "Username or passowrd does not exists",
+  //               icon: "error",
+  //               toast: true,
+  //               timer: 6000,
+  //               position: 'top-right',
+  //               timerProgressBar: true,
+  //               showConfirmButton: false,
+  //           })
+  //       }
+  //   }
 
-        } else {    
-            console.log(response.status);
-            console.log("there was a server issue");
-            swal.fire({
-                title: "Username or passowrd does not exists",
-                icon: "error",
-                toast: true,
-                timer: 6000,
-                position: 'top-right',
-                timerProgressBar: true,
-                showConfirmButton: false,
-            })
+  const [token,setToken] = useState('')
+    // const token = localStorage.getItem('token');
+    useEffect(()=>{
+        const token = Cookies.get("authToken");
+        setToken(token)
+    },[])
+
+
+    
+    const [user, setUser] = useState({});
+    useEffect(()=>{
+        if(token){
+          const decodedToken = jwtDecode(token);
+          setUser(decodedToken)
         }
-    }
+    },[token])
+    // console.log(user,'user')
+    
+    // console.log(token)
 
-    const token = localStorage.getItem('access_token');
-if (!token) {
-  console.log('No token found.');
-  // Handle the case when the user is not logged in
-}
-   
+  // if (!!token) {
+  //   console.log('No token found.');
+  //   // Handle the case when the user is not logged in
+  // }
+
+
   // document.cookie = `authToken=${access}; path=/; expires=Fri, 16 May 2025 10:13:48 GMT; SameSite=None; Secure`;
 
 
   // Fetch game data
+  
   const getGames = async () => {
     try {
       const response = await axios.get('http://localhost:8000/api/game/');
@@ -614,21 +706,6 @@ if (!token) {
     }
   };
 
-  // Fetch user's game cart
-  const getGameCart = async () => {
-    if (!isLoggedIn()) return;
-
-    try {
-      const response = await axiosWithAuth().get('/gamecart/');
-      setGameCart(response.data);
-    } catch (error) {
-      console.error('Error fetching game cart:', error);
-      if (error.response?.status === 401) {
-        navigate('/login');
-        toast.error('Session expired. Please log in again.');
-      }
-    }
-  };
 
   // Token handling logic: decode token and check expiry
   const decodeToken = (token) => {
@@ -648,7 +725,7 @@ if (!token) {
   };
 
   const refreshTokenIfNeeded = async () => {
-    const token = localStorage.getItem('access_token');
+    const token = localStorage.getItem('token');
     if (!token) {
       console.log('No token found.');
       return;
@@ -675,23 +752,28 @@ if (!token) {
 
   // Logout function
   const logout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    navigate('/login');
+    Cookies.remove('authToken');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    // localStorage.removeItem('token');
+    // localStorage.removeItem('refresh_token');
+    navigate('/');
     toast.success('Logged out successfully!');
   };
+
+    
 
   // const token = localStorage.getItem('access_token');
   // console.log("Access token from localStorage:", token);
 
   // Function to handle adding items to favourites
-  const addToFavourte = async (itemId) => {
-    if (!isLoggedIn()) {
+  const addToGameCart = async (itemId) => {
+    if (!token) {
       toast.warning('Please log in to add to favourites!');
       navigate('/login');
       return;
     }
-
+    
     try {
       const updatedFavourites = { ...favouriteItems };
       const quantity = updatedFavourites[itemId] ? updatedFavourites[itemId] + 1 : 1;
@@ -701,14 +783,52 @@ if (!token) {
       const itemPrice = getItemPrice(itemId);
       const itemTotal = itemPrice * quantity;
 
-      await axiosWithAuth().post('/gamecart/', { game_id: itemId, quantity, total_price: itemTotal });
+      await axiosWithAuth().post('/gamecart/', {
+        game: itemId,
+        quantity: quantity,
+      });
+      
       toast.success('Successfully added game to favourites!');
     } catch (error) {
       console.error('Error adding to favourites:', error);
       toast.error('Failed to add game to favourites!');
     }
   };
+  
+  // Fetch user's game cart
+  const getGameCart = async () => {
+    if (!isLoggedIn()) return;
 
+    try {
+      const response = await axiosWithAuth().get('/gamecart/');
+      // console.log('game cart data: ', response.data)
+      setGameCart(response.data);
+    } catch (error) {
+      console.error('Error fetching game cart:', error);
+      if (error.response?.status === 401) {
+        navigate('/login');
+        toast.error('Session expired. Please log in again.');
+      }
+    }
+  };
+
+  const getGameCarts = async () => {
+    const response = await axiosWithAuth().get('/gamecart/');
+    const transformed = {};
+    response.data.forEach(item => {
+      transformed[item.game] = item.quantity;
+    });
+    setFavouriteItems(transformed);
+  };
+  
+  const getGameCartCount = () => {
+    let totalCount = 0;
+    gameCart.forEach(item => {
+      totalCount += item.quantity;
+    });
+    return totalCount;
+  }
+  
   // Helper to get item price
   const getItemPrice = (itemId) => {
     const game = games.find((g) => g.id === Number(itemId));
@@ -745,13 +865,13 @@ if (!token) {
   const value = {
     games,
     favouriteItems,
-    addToFavourte,
+    addToGameCart,
     getItemPrice,
     updateQuantity,
     gameCart,
     logout,
     isLoggedIn,
-    login,
+    // loginUser
   };
 
   return (

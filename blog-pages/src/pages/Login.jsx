@@ -159,7 +159,7 @@ import { GameContext } from '../contexts/GameContext';
 // import './Login.css';
 
 const Login = () => {
-  const {login} = useContext(GameContext)
+  const {loginUser} = useContext(GameContext)
   const [forgotPassword, setForgotPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -257,92 +257,93 @@ const Login = () => {
   //   }
   // };
 
-  // const handleLogin = async () => {
-  //   try {
-  //     const response = await axios.post('http://localhost:8000/api/login/', {
-  //       email,
-  //       password
-  //     });
+  const handleLogin = async () => {
+    // setIsLoading(true);
+    try {
+      const response = await axios.post('http://localhost:8000/api/login/', {
+        email,
+        password
+      });
   
-  //     // Log the full response from the backend for debugging purposes
-  //     console.log("Full response from backend:", response);
+      // Log the full response from the backend for debugging purposes
+      console.log("Full response from backend:", response.data.token.access.access);
   
-  //     const data = response.data;
+      const data = response.data;
   
-  //     // Ensure the data contains the required fields
-  //     if (!data || !data.token || !data.token.access || !data.user) {
-  //       console.error("Login failed: Missing token or user data.");
-  //       alert('Login failed: Missing token or user data.');
-  //       return;
-  //     }
+      // Ensure the data contains the required fields
+      if (!data || !data.token || !data.token.access || !data.user) {
+        console.error("Login failed: Missing token or user data.");
+        alert('Login failed: Missing token or user data.');
+        return;
+      }
   
-  //     const accessToken = data.token.access; // Corrected token access path
-  //     const user = data.user;
+      const accessToken = data.token.access.access; // Corrected token access path
+      const user = data.user;
   
-  //     // Save the access token in cookies and localStorage
-  //     Cookies.set('authToken', accessToken, { expires: 7 });  // Token will expire in 7 days
-  //     localStorage.setItem('token', accessToken);
-  //     localStorage.setItem('user', JSON.stringify(user));
+      // Save the access token in cookies and localStorage
+      Cookies.set('authToken', accessToken, { expires: 7 });  // Token will expire in 7 days
+      localStorage.setItem('token', accessToken);
+      localStorage.setItem('user', JSON.stringify(user));
   
-  //     // Success message
-  //     toast.success('Logged in successfully!');
+      // Success message
+      toast.success('Logged in successfully!');
   
-  //     // Redirect based on the user role
-  //     if (user.role === 'admin') {
-  //       navigate('/dashboard');
-  //     } else {
-  //       navigate('/');
-  //     }
+      // Redirect based on the user role
+      if (user.role === 'admin') {
+        navigate('/dashboard');
+      } else {
+        navigate('/');
+      }
   
-  //   } catch (error) {
-  //     // Handle errors gracefully
-  //     if (error.response) {
-  //       console.error('Login failed:', error.response.data);
-  //       toast.error("Invalid Email or Password");
-  //     } else {
-  //       console.error('Login error:', error.message);
-  //       alert('An error occurred during login.');
-  //     }
-  //   }
-  // };
+    } catch (error) {
+      // Handle errors gracefully
+      if (error.response) {
+        console.error('Login failed:', error.response.data);
+        toast.error("Invalid Email or Password");
+      } else {
+        console.error('Login error:', error.message);
+        alert('An error occurred during login.');
+      }
+    }
+  };
 
-  // useEffect(() => {
-  //   const tokenLocal = localStorage.getItem('token');
-  //   const tokenCookie = Cookies.get('token');
+  useEffect(() => {
+    const tokenLocal = localStorage.getItem('token');
+    const tokenCookie = Cookies.get('authToken');
 
-  //   console.log('Token in LocalStorage:', tokenLocal);
-  //   console.log('Token in Cookies:', tokenCookie);
+    console.log('Token in LocalStorage:', tokenLocal);
+    console.log('Token in Cookies:', tokenCookie);
 
-  //   // Case 1: Both tokens are missing
-  //   if (!tokenLocal && !tokenCookie) {
-  //     // navigate('/home-gape'); 
-  //     console.warn('Not Token Found');
-  //   }
-  //   else if (tokenLocal && tokenCookie && tokenLocal === tokenCookie) {
-  //     // navigate('/use-page');
-  //     console.warn('Token Founded');
-  //   }
-  //   else {
-  //     // navigate('/login')
-  //     console.warn('Token mismatch or partial presence.');
-  //     // Optional: log out user or show message
-  //   }
-  // }, []);
+    // Case 1: Both tokens are missing
+    if (!tokenLocal && !tokenCookie) {
+      // navigate('/home-gape'); 
+      console.warn('Not Token Found');
+    }
+    else if (tokenLocal && tokenCookie && tokenLocal === tokenCookie) {
+      // navigate('/use-page');
+      console.warn('Token Founded');
+    }
+    else {
+      // navigate('/login')
+      console.warn('Token mismatch or partial presence.');
+      // Optional: log out user or show message
+    }
+  }, []);
 
-  // console.log("Token in LocalStorage:", localStorage.getItem('token'));
-  // console.log("Token in Cookies:", Cookies.get('authToken'));
+  console.log("Token in LocalStorage:", localStorage.getItem('token'));
+  console.log("Token in Cookies:", Cookies.get('authToken'));
   
-  const handleSubmit = e => {
-    e.preventDefault()
-    const email = e.target.email.value
-    const password = e.target.password.value
+  // const handleSubmit = e => {
+  //   e.preventDefault()
+  //   const email = e.target.email.value
+  //   const password = e.target.password.value
 
-    email.length > 0 && loginUser(email, password)
+  //   email.length > 0 && loginUser(email, password)
 
-    console.log(email)
-    console.log(password)
+  //   console.log(email)
+  //   console.log(password)
    
-  }
+  // }
 
   return (
     <>
@@ -363,7 +364,7 @@ const Login = () => {
           </h3>
           {!forgotPassword ? (
           <div>
-            <form onSubmit={handleSubmit}>
+            
           <div className="space-y-6">
             
             <div>
@@ -371,8 +372,8 @@ const Login = () => {
               <input name="email" 
               id="email" 
               type="email" 
-              // value={email} 
-              // onChange={e => setEmail(e.target.value)} 
+              value={email} 
+              onChange={e => setEmail(e.target.value)} 
               required 
               className="bg-slate-100 w-full text-sm text-slate-800 px-4 py-3 rounded-md outline-none border focus:border-blue-600 focus:bg-transparent" placeholder="Enter Email" />
             </div>
@@ -381,8 +382,8 @@ const Login = () => {
               <input name="password" 
                 id="password"
                 type="password"
-                // value={password}
-                // onChange={e => setPassword(e.target.value)} 
+                value={password}
+                onChange={e => setPassword(e.target.value)} 
                 required 
                 className="bg-slate-100 w-full text-sm text-slate-800 px-4 py-3 rounded-md outline-none border focus:border-blue-600 focus:bg-transparent" placeholder="Enter Password" />
             </div>
@@ -402,14 +403,15 @@ const Login = () => {
             </div>
           </div>
 
+          {/* <form onSubmit={loginUser}> */}
           <div className="!mt-12">
             <button type="button"
-            // onClick={login}
+            onClick={handleLogin}
              className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
               Log in
             </button>
           </div>
-          </form>
+          {/* </form> */}
           <div className="my-4 flex items-center gap-4">
             <hr className="w-full border-slate-300" />
             <p className="text-sm text-slate-800 text-center">or</p>
@@ -481,6 +483,12 @@ const Login = () => {
       
     </div>
     
+    </>
+    );
+  };
+
+export default Login;
+
 
     {/* <div className="flex justify-center items-center min-h-screen bg-gray-100 shadow">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
@@ -586,11 +594,7 @@ const Login = () => {
         )}
       </div>
     </div> */}
-    </>
-  );
-};
-
-export default Login;
+    
 
 
 // import axios from 'axios';

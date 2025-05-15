@@ -11,14 +11,15 @@ import { IoIosLogOut } from 'react-icons/io';
 
 const Navbar = () => {
     const [visible, setVisible] = useState(false);
-    const {setShowSearch, getFavouriteCount, logout } = useContext(GameContext);
+    const {setShowSearch, addToGameCart, logout } = useContext(GameContext);
     const navigate = useNavigate()
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     // Check if the user is logged in (this could be from localStorage or an auth API)
     useEffect(() => {
-        const token = localStorage.getItem('access_token'); // Check if token exists in localStorage
-        if (token) {
+        const token = localStorage.getItem('token'); // Check if token exists in localStorage
+        // console.log(token)
+        if (!token) {
         setIsLoggedIn(false);
         } else {
         setIsLoggedIn(true);
@@ -163,7 +164,7 @@ const Navbar = () => {
               // </Link>
               // </div> 
           ) : (
-            <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+            <div className="lg:flex lg:flex-1 lg:justify-end">
               <Link to="/login" className="text-sm font-semibold text-gray-900">
                 Log in <span aria-hidden="true">&rarr;</span>
               </Link>
@@ -192,7 +193,7 @@ const Navbar = () => {
               <MdFavorite className="w-5 min-w-5 text-black" size={20} />
             </div>
             <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-xs">
-              {/* {getFavouriteCount()} */}
+              {/* {addToGameCart()} */}
               0
             </p>
           </Link>

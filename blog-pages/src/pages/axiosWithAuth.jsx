@@ -23,12 +23,13 @@ import React from 'react'
 // export default axiosWithAuth
 
 const axiosWithAuth = () => {
-  const token = localStorage.getItem('access_token');
+  const token = localStorage.getItem('token');
   if (!token) {
     throw new Error("No access token found. User might not be logged in.");
   }
 
   return axios.create({
+    baseURL: 'http://localhost:8000/api/',
     headers: {
       Authorization: `Bearer ${token}`, // Attach token in the header
     },

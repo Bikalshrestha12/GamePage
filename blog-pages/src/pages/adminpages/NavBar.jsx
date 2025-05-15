@@ -1,10 +1,11 @@
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { assets } from '../../assets/assets';
 import { useNavigate } from 'react-router-dom';
 import { Link, NavLink } from 'react-router-dom';
+import { GameContext } from '../../contexts/GameContext';
 
 
 const navigation = [
@@ -24,15 +25,16 @@ const navigation = [
 
 const NavBar = () => {
 
+  const {logout} = useContext(GameContext)
   const navigate = useNavigate()
 
-  const handleLogout = () => {
-    // Remove JWT token from localStorage or cookies
-    localStorage.removeItem('access_token');
+  // const handleLogout = () => {
+  //   // Remove JWT token from localStorage or cookies
+  //   localStorage.removeItem('access_token');
     
-    // Redirect user to login page
-    navigate('/login');
-  };
+  //   // Redirect user to login page
+  //   navigate('/login');
+  // };
 
   return (
     <div className='flex flex-col'>
@@ -123,7 +125,7 @@ const NavBar = () => {
                 </MenuItem>
                 <MenuItem>
                   <button
-                    onClick={handleLogout}
+                    onClick={logout}
                     className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
                   >
                     Sign out

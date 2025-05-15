@@ -82,16 +82,18 @@ const Favourite = () => {
     const { games, navigate, currency, favouriteItems, updateQuantity } = useContext(GameContext);
     const [favouriteData, setFavouriteData] = useState([]);
     console.log(favouriteItems)
+    console.log(favouriteData)
 
     useEffect(() => {
-      // const fetchData = async () => {
-      //   await axiosWithAuth().get(`/gamecart/`, {
-  
-      //   });
-      // };
-      // fetchData();
-
+      
       const tempData = [];
+      const fetchData = async () => {
+        const tempData = await axiosWithAuth().get(`/gamecart/`, {
+  
+        });
+      };
+      fetchData();
+      console.log(tempData)
   
       for (const itemId in favouriteItems) {
         if (favouriteItems[itemId] > 0) {
@@ -105,6 +107,7 @@ const Favourite = () => {
       setFavouriteData(tempData);
     }, [favouriteItems]);
   
+
     return (
         <div className='m-8'>
       <div className="p-4">

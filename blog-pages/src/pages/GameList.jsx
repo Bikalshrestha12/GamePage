@@ -67,7 +67,7 @@ import { FaRegStar, FaStar, FaStarHalfAlt } from 'react-icons/fa';
 const GameList = () => {
 
   // const {gameId} = useParams();
-  const { games, currency, addToFavourte, gameCart } = useContext(GameContext);
+  const { games, currency, addToGameCart, gameCart } = useContext(GameContext);
   const [gameData, setGameData] = useState({});
   const [image, setImage] = useState(null);
   const [lavels, setLavels] = useState('');
@@ -85,18 +85,34 @@ const GameList = () => {
     
   }
 
+  // const getSingleGame = async () => {
+  //   try {
+  //     const response = await axios.get(`http://localhost:8000/api/gamedetail/${id}/`);
+  //     const game = response.data.data;
+  //     setGameData(game);
+
+  //     if (game.image) {
+  //       const fullImageUrl = game.image.startsWith('/')
+  //         ? `http://localhost:8000${game.image}`
+  //         : game.image;
+  //       setImage(fullImageUrl);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching game data:', error);
+  //   }
+  // };
   
   
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/gamedetail/2/'); // Replace with your actual API URL
+        const response = await fetch(`http://localhost:8000/api/gamedetail/${id}/`); // Replace with your actual API URL
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
         const jsonResponse = await response.json();
-        console.log('Parsed JSON:', jsonResponse);
+        console.log('Parsed JSON:', jsonResponse.data);
 
         const game = jsonResponse.data;
         console.log('Game data:', game);
@@ -106,6 +122,7 @@ const GameList = () => {
         if (game.image) {
           const fullImageUrl = `http://localhost:8000${game.image}`;
           setImage(fullImageUrl);
+          // setGameData(fullImageUrl);
         }
 
       } catch (error) {
@@ -200,7 +217,7 @@ const GameList = () => {
             </div> */}
 
             <div className='flex flex-col md:flex-row gap-4'>
-              <button onClick={() => addToFavourte(gameData.id)} className='bg-black text-white px-8 py-3 text-sm active:bg-gray-700 cursor-pointer'>ADD TO FAVOURITE GAME</button>
+              <button onClick={() => addToGameCart(gameData.id)} className='bg-black text-white px-8 py-3 text-sm active:bg-gray-700 cursor-pointer'>ADD TO FAVOURITE GAME</button>
               <button onClick={() => navigate('/play-game')} className='bg-black text-white px-8 py-3 text-sm active:bg-gray-700 cursor-pointer'>PLAY TO GAME</button>
             </div>
               <hr className='mt-8 sm:w-4/5' />
